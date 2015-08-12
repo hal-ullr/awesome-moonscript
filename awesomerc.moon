@@ -12,6 +12,7 @@ require "awful.autofocus"
 require "list"
 
 
+terminal = "urxvt"
 menubar.utils.terminal = "urxvt"
 
 
@@ -35,7 +36,7 @@ do
 		in_error = false
 
 
-beautiful.init "/home/hal/.config/awesome/themes/default/theme.lua"
+beautiful.init "/home/hal/.config/awesome/themes/hal/theme.lua"
 
 modkey = "Mod1"
 
@@ -95,7 +96,7 @@ taskbuttons = list.buttons
 	[mods: {      }, m: 5]: -> awful.client.focus.byidx -1
 
 
---  Similar to the menu, the prompt box is referenced\
+--  Similar to the menu, the prompt box is referenced
 --  by hotkeys and must be available in the parent scope
 promptbox = {}
 			  
@@ -120,7 +121,12 @@ wiboxes = for s = 1, screen.count!
 				taskbuttons
 			\set_right with wibox.layout.fixed.horizontal!
 				\add awful.widget.textclock!
-				\add awful.widget.layoutbox s
+				\add with awful.widget.layoutbox s
+					\buttons list.buttons
+						[mods: { }, m: 1]: -> awful.layout.inc( 1)
+						[mods: { }, m: 3]: -> awful.layout.inc(-1)
+						[mods: { }, m: 4]: -> awful.layout.inc( 1)
+						[mods: { }, m: 5]: -> awful.layout.inc(-1)
 
 
 --  Mouse bindings
@@ -277,5 +283,5 @@ client.connect_signal "mouse::enter", (c) ->
 client.connect_signal "focus", (c) ->
 	c.border_color = beautiful.border_focus
 
-client.connect_signal "unfocus", (c) -> 
+client.connect_signal "unfocus", (c) ->
 	c.border_color = beautiful.border_normal
